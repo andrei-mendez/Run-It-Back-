@@ -1,1 +1,69 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Timeline</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <section>
+    <h2>Our Timeline ❤️</h2>
+    <div class="timeline">
+
+      <!-- Timeline points (staggered left/right) -->
+      <div class="timeline-item left" onclick="showEvent(1)">
+        <img class="thumb" src="images/coffee-thumb.jpg" alt="Coffee Date">
+        <div class="content">
+          <p>Date 1 - Coffee Shop ☕</p>
+        </div>
+      </div>
+
+      <div class="timeline-item right" onclick="showEvent(2)">
+        <img class="thumb" src="images/movie-thumb.jpg" alt="Movie Night">
+        <div class="content">
+          <p>Date 2 - Movie Night 🎬</p>
+        </div>
+      </div>
+
+      <div class="timeline-item left" onclick="showEvent(3)">
+        <img class="thumb" src="images/park-thumb.jpg" alt="Amusement Park">
+        <div class="content">
+          <p>Date 3 - Amusement Park 🎡</p>
+        </div>
+      </div>
+
+      <div class="timeline-item right" onclick="showEvent(4)">
+        <img class="thumb" src="images/beach-thumb.jpg" alt="Beach Walk">
+        <div class="content">
+          <p>Date 4 - Beach Walk 🌊</p>
+        </div>
+      </div>
+
+      <div class="timeline-item left" onclick="showEvent(5)">
+        <img class="thumb" src="images/concert-thumb.jpg" alt="Concert">
+        <div class="content">
+          <p>Date 5 - Concert 🎶</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="btn-group">
+      <button onclick="location.href='reflection.html'">Next ➡️</button>
+    </div>
+  </section>
+
+  <!-- Modal popup -->
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3 id="eventTitle"></h3>
+      <img id="eventImage" src="" alt="Event">
+      <p id="eventDescription"></p>
+    </div>
+  </div>
+</body>
+</html>
