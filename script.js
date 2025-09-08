@@ -1,50 +1,51 @@
-function sayYes() {
-  alert("💖 She said yes!!");
-}
-
-function sayNo() {
-  alert("💔 At least I tried...");
-}
-
-// Timeline event data
+// Example events data
 const events = {
   1: {
-    title: "Date 1 - Coffee Shop ☕",
+    title: "Coffee Shop ☕",
     img: "images/coffee.jpg",
-    desc: "Our very first date at the coffee shop. I was so nervous but it was amazing."
+    desc: "Our very first coffee shop date ❤️"
   },
   2: {
-    title: "Date 2 - Movie Night 🎬",
+    title: "Movie Night 🎬",
     img: "images/movie.jpg",
-    desc: "We watched that funny movie and couldn’t stop laughing."
+    desc: "We laughed and ate too much popcorn 🍿"
   },
   3: {
-    title: "Date 3 - Amusement Park 🎡",
+    title: "Amusement Park 🎡",
     img: "images/park.jpg",
-    desc: "The roller coasters, cotton candy, and your smile — unforgettable."
+    desc: "That roller coaster was unforgettable!"
   },
   4: {
-    title: "Date 4 - Beach Walk 🌊",
+    title: "Beach Walk 🌊",
     img: "images/beach.jpg",
-    desc: "Walking by the ocean, just talking about life."
+    desc: "Peaceful evening by the ocean."
   },
   5: {
-    title: "Date 5 - Concert 🎶",
+    title: "Concert 🎶",
     img: "images/concert.jpg",
-    desc: "Our favorite band live — I’ll never forget singing along with you."
+    desc: "Danced the night away to our favorite songs 🎤"
   }
 };
 
-// Show modal with event data
-function showEvent(num) {
-  const modal = document.getElementById("eventModal");
-  document.getElementById("eventTitle").innerText = events[num].title;
-  document.getElementById("eventImage").src = events[num].img;
-  document.getElementById("eventDescription").innerText = events[num].desc;
-  modal.style.display = "flex";
+function showEvent(id) {
+  const event = events[id];
+  if (!event) return;
+
+  document.getElementById("eventTitle").innerText = event.title;
+  document.getElementById("eventImage").src = event.img;
+  document.getElementById("eventDescription").innerText = event.desc;
+
+  document.getElementById("eventModal").style.display = "flex";
 }
 
-// Close modal
 function closeModal() {
   document.getElementById("eventModal").style.display = "none";
 }
+
+// Close modal when clicking outside content
+window.onclick = function(e) {
+  const modal = document.getElementById("eventModal");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+};
