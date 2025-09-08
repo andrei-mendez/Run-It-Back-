@@ -34,11 +34,11 @@ function showEvent(id) {
   document.getElementById("eventImage").src = event.img;
   document.getElementById("eventDescription").innerText = event.desc;
 
-  document.getElementById("eventModal").style.display = "flex";
+  document.getElementById("eventModal").style.display = "flex"; // show modal
 }
 
 function closeModal() {
-  document.getElementById("eventModal").style.display = "none";
+  document.getElementById("eventModal").style.display = "none"; // hide modal
 }
 
 // Close modal when clicking outside content
@@ -47,4 +47,9 @@ window.onclick = function(e) {
   if (e.target === modal) {
     modal.style.display = "none";
   }
+};
+
+// Ensure modal is hidden on page load
+window.onload = function() {
+  document.getElementById("eventModal").style.display = "none";
 };
