@@ -96,7 +96,7 @@ button:hover {
 }
 
 .timeline-item.left .content {
-    margin-right: 90px; /* offset left */
+    margin-right: 90px;
 }
 
 /* Right items */
@@ -106,7 +106,7 @@ button:hover {
 }
 
 .timeline-item.right .content {
-    margin-left: 90px; /* offset right */
+    margin-left: 90px;
 }
 
 /* Modal overlay (always on top, centered) */
@@ -153,16 +153,31 @@ button:hover {
     cursor: pointer;
 }
 
-/* Mobile adjustments */
+/* -----------------------
+   Mobile adjustments
+------------------------- */
 @media screen and (max-width: 768px) {
     .timeline-item {
         width: 100%;
         padding: 20px 0;
     }
-    .timeline-item.left .content {
-        margin-right: 90px;
+
+    /* Keep circles centered */
+    .timeline-item .thumb {
+        left: 50%;
+        transform: translateX(-50%);
     }
+
+    /* Staggered content boxes */
+    .timeline-item.left .content {
+        margin-right: 15px;  /* smaller offset for mobile */
+        text-align: right;
+        max-width: 45%;      /* smaller to fit screen */
+    }
+
     .timeline-item.right .content {
-        margin-left: 90px;
+        margin-left: 15px;   /* smaller offset for mobile */
+        text-align: left;
+        max-width: 45%;      /* smaller to fit screen */
     }
 }
