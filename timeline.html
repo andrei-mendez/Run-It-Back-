@@ -1,68 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Timeline</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <section>
-    <h2>Our Timeline ❤️</h2>
-    <div class="timeline">
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
 
-      <!-- Timeline points (staggered left/right) -->
-      <div class="timeline-item left" onclick="showEvent(1)">
-        <img class="thumb" src="images/coffee-thumb.jpg" alt="Coffee Date">
-        <div class="content">
-          <p>Date 1 - Coffee Shop ☕</p>
-        </div>
-      </div>
+/* Container for all pages */
+.container {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+}
 
-      <div class="timeline-item right" onclick="showEvent(2)">
-        <img class="thumb" src="images/movie-thumb.jpg" alt="Movie Night">
-        <div class="content">
-          <p>Date 2 - Movie Night 🎬</p>
-        </div>
-      </div>
+/* Buttons */
+button {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    border: 2px solid #f5f5f5;
+    padding: 12px 24px;
+    margin: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s, transform 0.2s;
+}
 
-      <div class="timeline-item left" onclick="showEvent(3)">
-        <img class="thumb" src="images/park-thumb.jpg" alt="Amusement Park">
-        <div class="content">
-          <p>Date 3 - Amusement Park 🎡</p>
-        </div>
-      </div>
+button:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
 
-      <div class="timeline-item right" onclick="showEvent(4)">
-        <img class="thumb" src="images/beach-thumb.jpg" alt="Beach Walk">
-        <div class="content">
-          <p>Date 4 - Beach Walk 🌊</p>
-        </div>
-      </div>
+/* Timeline Styles */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
 
-      <div class="timeline-item left" onclick="showEvent(5)">
-        <img class="thumb" src="images/concert-thumb.jpg" alt="Concert">
-        <div class="content">
-          <p>Date 5 - Concert 🎶</p>
-        </div>
-      </div>
+/* Vertical line down the middle */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #444;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+}
 
-    </div>
+/* Timeline item container */
+.timeline-item {
+    padding: 20px 30px;
+    position: relative;
+    width: 50%;
+}
 
-    <div class="btn-group">
-      <button onclick="location.href='reflection.html'">Next ➡️</button>
-    </div>
-  </section>
+/* Common content box */
+.timeline-item .content {
+    padding: 15px;
+    background: #1e1e1e;
+    border-radius: 10px;
+    border: 1px solid #333;
+    position: relative;
+    text-align: left;
+}
 
-  <!-- Modal popup -->
-  <div id="eventModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h3 id="eventTitle"></h3>
-      <img id="eventImage" src="" alt="Event">
-      <p id="eventDescription"></p>
-    </div>
-  </div>
-</body>
-</html>
+/* Thumbnail as the dot */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top: 20px;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #f5f5f5;
+    z-index: 1;
+    background-image: var(--img);
+}
+
+/* Left items */
+.timeline-item.left {
+    left: 0;
+    text-align: right;
+}
+
+.timeline-item.left::before {
+    right: -25px;
+}
+
+/* Right items */
+.timeline-item.right {
+    left: 50%;
+    text-align: left;
+}
+
+.timeline-item.right::before {
+    left: -25px;
+}
+
+/* Popup when clicking thumbnail */
+.timeline-popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.timeline-popup img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 12px;
+    border: 3px solid #f5f5f5;
+}
+
+.timeline-popup .description {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #f5f5f5;
+    text-align: center;
+}
+
+/* Responsive (for iPhones and smaller screens) */
+@media screen and (max-width: 768px) {
+    body {
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .timeline::after {
+        left: 50%;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: center !important;
+    }
+
+    .timeline-item.left, 
+    .timeline-item.right {
+        left: 0;
+    }
+
+    .timeline-item::before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .timeline-item .content {
+        text-align: center;
+        margin-top: 60px;
+    }
+}
+
