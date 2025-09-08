@@ -1,4 +1,3 @@
-// Example events data
 const events = {
   1: {
     title: "Coffee Shop ☕",
