@@ -5,27 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Timeline</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <section>
     <h2>Our Timeline ❤️</h2>
     <div class="timeline">
-      <div class="event">
-        <p>First hangout 🥤</p>
-        <img src="images/hangout1.jpg" alt="First Hangout">
+      <!-- Timeline points -->
+      <div class="timeline-item" onclick="showEvent(1)">
+        <span class="dot"></span>
+        <p>Date 1 - Coffee Shop ☕</p>
       </div>
-      <div class="event">
-        <p>Movie Night 🎬</p>
-        <img src="images/movie.jpg" alt="Movie Night">
+      <div class="timeline-item" onclick="showEvent(2)">
+        <span class="dot"></span>
+        <p>Date 2 - Movie Night 🎬</p>
       </div>
-      <div class="event">
-        <p>That one funny day 😂</p>
-        <img src="images/fun.jpg" alt="Funny Day">
+      <div class="timeline-item" onclick="showEvent(3)">
+        <span class="dot"></span>
+        <p>Date 3 - Amusement Park 🎡</p>
+      </div>
+      <div class="timeline-item" onclick="showEvent(4)">
+        <span class="dot"></span>
+        <p>Date 4 - Beach Walk 🌊</p>
+      </div>
+      <div class="timeline-item" onclick="showEvent(5)">
+        <span class="dot"></span>
+        <p>Date 5 - Concert 🎶</p>
       </div>
     </div>
+
     <div class="btn-group">
       <button onclick="location.href='reflection.html'">Next ➡️</button>
     </div>
   </section>
+
+  <!-- Modal popup -->
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3 id="eventTitle"></h3>
+      <img id="eventImage" src="" alt="Event">
+      <p id="eventDescription"></p>
+    </div>
+  </div>
 </body>
 </html>
