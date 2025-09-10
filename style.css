@@ -1,54 +1,57 @@
 /* ============================
-   style.css — full replacement
-   Fixes: perfect circles, staggered labels,
-   circles always on center line (desktop + mobile)
+   style.css — Full replacement
+   Timeline & Run It Back Page
    ============================ */
 
 /* Reset & box-sizing */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-/* Page baseline + prevent horizontal scroll */
+/* Global html/body */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
   font-family: Arial, sans-serif;
   color: #f5f5f5;
   text-align: center;
+  overflow-x: hidden; /* prevent horizontal scroll */
 }
 
-/* Background and full-screen dark overlay (overlay via ::before) */
+/* Background + overlay for all pages */
 body {
-  background: url("images/scenic.png") no-repeat center center;
+  background: url("images/scenic.png") no-repeat center center fixed;
   background-size: cover;
-  background-color: #121212;
   position: relative;
+  background-color: #121212;
 }
 body::before {
   content: "";
   position: fixed;
-  inset: 0;                      /* top:0; right:0; bottom:0; left:0; */
+  inset: 0;
   background: rgba(18,18,18,0.75);
   z-index: 0;
   pointer-events: none;
 }
 
-/* Ensure content sits above overlay */
-section, .page, .container {
-  position: relative;
-  z-index: 1;
+/* ========== Run It Back Page ========== */
+.centered-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden; /* prevents scrolling past image on mobile */
+  padding: 20px;
+}
+.centered-page h1 {
+  font-size: 2.8rem;
+  margin: 0 0 20px 0;
 }
 
-/* Root variables for easy tuning */
-:root{
-  --circle-size: 48px;   /* base circle diameter */
-  --circle-gap: 12px;    /* gap between circle edge and label */
-  --offset: calc((var(--circle-size) / 2) + var(--circle-gap));
-}
-
-/* Shared buttons */
+/* Buttons shared for all pages */
 button {
   background-color: rgba(30,30,30,0.95);
   color: #f5f5f5;
@@ -58,29 +61,39 @@ button {
   border-radius: 10px;
   cursor: pointer;
   font-size: 18px;
+  transition: background 0.3s, transform 0.2s;
+}
+button:hover {
+  background-color: #333;
+  transform: scale(1.05);
 }
 
-/* ---------- Run-it-back center helper ---------- */
-.centered-page {
+/* ========== Timeline Page ========== */
+.timeline-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
+  width: 100%;
+  padding: 0 12px;
 }
-.centered-page h1 { font-size: 2.6rem; margin: 0 0 14px 0; }
 
-/* ---------- Timeline ---------- */
-.timeline {
-  position: relative;
-  max-width: 900px;
-  margin: 36px auto;
-  padding: 18px;
+.timeline-container h2 {
+  margin-top: 24px; /* title near top */
+  margin-bottom: 40px; /* space to timeline */
+  font-size: 2rem;
   z-index: 1;
 }
 
-/* center vertical line */
+/* Timeline wrapper */
+.timeline {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  padding: 20px 0;
+  z-index: 1;
+}
+
+/* Center vertical line brighter */
 .timeline::after {
   content: "";
   position: absolute;
@@ -89,48 +102,41 @@ button {
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  background: rgba(245,245,245,0.16);
+  background: rgba(245,245,245,0.35); /* brighter */
   z-index: 1;
 }
 
-/* each row is full width to avoid left:50% container confusion */
+/* Timeline items */
 .timeline-item {
   position: relative;
   width: 100%;
   padding: 24px 8px;
-  min-height: calc(var(--circle-size) + 12px);
+  min-height: 60px; /* enough space for circle */
 }
 
-/* Circle / thumbnail
-   - supports:
-       <div class="circle"><img src="..."></div>
-     OR
-       <img class="thumb" src="...">
-   - uses aspect-ratio so it's never stretched */
-.timeline-item .circle,
-.timeline-item > img.thumb {
+/* Circle thumbnails */
+.timeline-item .circle {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
-  width: var(--circle-size);
-  aspect-ratio: 1 / 1;       /* guarantees perfect circle */
+  transform: translate(-50%, -50%);
+  width: 48px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(245,245,245,0.95);
-  background: #333;
+  background: #444;
   z-index: 3;
   cursor: pointer;
 }
-.timeline-item .circle img,
-.timeline-item > img.thumb {
+.timeline-item .circle img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* Event label (plain text, no visible box) */
+/* Labels staggered left/right */
 .timeline-item .content {
   position: absolute;
   top: 50%;
@@ -144,25 +150,18 @@ button {
   padding: 0;
   margin: 0;
 }
-
-/* Stagger left / right: label is placed immediately next to the circle.
-   Using calc(50% + var(--offset)) keeps the circle centered and positions the label next to it. */
 .timeline-item.left .content {
-  right: calc(50% + var(--offset));  /* place on left side */
+  right: calc(50% + 60px); /* circle size + gap */
   text-align: right;
 }
 .timeline-item.right .content {
-  left: calc(50% + var(--offset));   /* place on right side */
+  left: calc(50% + 60px);
   text-align: left;
 }
 
-/* If text is long, allow wrapping but keep it tight */
-.timeline-item .content span,
-.timeline-item .content p { display: inline-block; margin:0; }
-
-/* ---------- Modal (centered overlay, does not push content) ---------- */
+/* Modal popup */
 .modal {
-  display: none;            /* show via JS when clicked */
+  display: none; /* shown via JS */
   position: fixed;
   inset: 0;
   display: flex;
@@ -172,7 +171,7 @@ button {
   z-index: 9999;
   padding: 16px;
 }
-.modal .modal-box {
+.modal .modal-content {
   width: 100%;
   max-width: 560px;
   background: #0f0f0f;
@@ -181,19 +180,30 @@ button {
   color: #f5f5f5;
   position: relative;
 }
-.modal .modal-box img { width: 100%; height: auto; border-radius:8px; margin: 12px 0; }
-.modal .close { position: absolute; top: 8px; right: 10px; font-size: 20px; cursor: pointer; }
+.modal .modal-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.modal .close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
 
-/* ---------- Responsive adjustments ---------- */
+/* ============================
+   Responsive tweaks
+   ============================ */
 @media (max-width: 700px) {
-  :root { --circle-size: 42px; --circle-gap: 10px; }
-  .timeline { padding: 12px; margin: 18px auto; }
-  .timeline-item { padding: 18px 6px; }
-  .timeline-item .content { max-width: 46%; font-size: 15px; }
-  .timeline-item.left .content { right: calc(50% + var(--offset)); }
-  .timeline-item.right .content { left: calc(50% + var(--offset)); }
+  :root { --circle-size: 42px; }
+  .timeline { padding: 12px; }
+  .timeline-item { padding: 18px 6px; min-height: 50px; }
+  .timeline-item .content { max-width: 48%; font-size: 15px; }
 }
 @media (max-width: 420px) {
-  :root { --circle-size: 38px; --circle-gap: 8px; }
-  .timeline-item .content { max-width: 48%; font-size: 14px; }
+  :root { --circle-size: 38px; }
+  .timeline-item .content { max-width: 50%; font-size: 14px; }
 }
