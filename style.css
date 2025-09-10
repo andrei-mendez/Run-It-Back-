@@ -1,229 +1,265 @@
 /* ============================
    style.css — Full replacement
-   Timeline & Run It Back Pages
+   Thoughtful fixes:
+   - All text stays white (overlay won't darken text)
+   - Background visible on iPhone (no `background-attachment: fixed`)
+   - Page itself doesn't scroll; only timeline scrolls
+   - Circles appear and stay on center line (desktop + mobile)
+   - Labels stagger properly on desktop and mobile
+   - More space between title & content, and more vertical gap between circles
+   - "What I did wrong" and final "Run it back" pages centered vertically+horizontally
    ============================ */
 
 /* Reset + box-sizing */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Global html/body */
+/* Base */
 html, body {
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    color: #f5f5f5; /* white text */
-    text-align: center;
-    overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: #f5f5f5;         /* white text everywhere */
+  text-align: center;
+  overflow-x: hidden;     /* prevent horizontal scroll globally */
+  background-color: #121212;
 }
 
-/* Background + overlay for all pages */
+/* Background (NO 'fixed' – fixes iOS rendering) */
 body {
-    background: url("images/scenic.png") no-repeat center center;
-    background-size: cover;
-    position: relative;
-    min-height: 100vh;
+  background: url("images/scenic.png") no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
 }
+
+/* Dark overlay behind content (does NOT sit above content) */
 body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(18,18,18,0.75);
-    z-index: 0; /* behind all content */
-    pointer-events: none;
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(18,18,18,0.75);
+  z-index: 0;              /* keep behind content */
+  pointer-events: none;
 }
 
-/* All headings and paragraphs inherit white */
-h1, h2, h3, h4, h5, h6, p, button, span, li {
-    color: #f5f5f5;
+/* Ensure primary content layers above overlay */
+section, .timeline-container, .centered-page,
+.full-centered, .reflection-page, .final-page,
+.timeline, .modal {
+  position: relative;
+  z-index: 1;
 }
 
-/* =====================
-   Run It Back Page
-   ===================== */
-.centered-page,
-.full-centered {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden; /* prevents scrolling past image */
-    padding: 20px;
-}
-.centered-page h1,
-.full-centered h1, 
-.full-centered p {
-    color: #f5f5f5; /* text always white */
+/* Generic headings/paragraphs/buttons forced white */
+h1,h2,h3,h4,h5,h6,p,button,span,li {
+  color: #f5f5f5 !important;
 }
 
-/* Buttons shared for all pages */
+/* -------------------------
+   First page (Run it Back)
+   - Keep this page full-screen and centered.
+   - Prevent page scroll on mobile.
+   ------------------------- */
+.centered-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;     /* do not let the whole page scroll */
+  padding: 20px;
+}
+.centered-page h1 {
+  font-size: 2.8rem;
+  line-height: 1.05;
+  margin-bottom: 18px;
+}
+
+/* -------------------------
+   Pages that should be fully centered (use these classes on body/section)
+   e.g. reflection page and final run-it-back page:
+   <body class="reflection-page"> ... or <section class="full-centered"> ...
+   ------------------------- */
+.full-centered,
+.reflection-page,
+.final-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* -------------------------
+   Buttons
+   ------------------------- */
 button {
-    background-color: rgba(30,30,30,0.95);
-    color: #f5f5f5;
-    border: 2px solid rgba(255,255,255,0.08);
-    padding: 12px 20px;
-    margin: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.3s, transform 0.2s;
+  background-color: rgba(30,30,30,0.95);
+  color: #f5f5f5;
+  border: 2px solid rgba(255,255,255,0.08);
+  padding: 12px 20px;
+  margin: 8px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
 }
-button:hover {
-    background-color: #333;
-    transform: scale(1.05);
-}
+button:hover { transform: translateY(-2px); }
 
-/* =====================
-   Timeline Page
-   ===================== */
+/* =========================
+   TIMELINE
+   - The page body will not scroll; timeline itself scrolls when needed
+   ========================= */
+
+/* container to hold title + scrollable timeline (wrap your markup inside .timeline-container) */
 .timeline-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    min-height: 100vh; /* ensures background covers entire viewport */
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;            /* make sure background fills viewport */
+  padding: 20px;
 }
 
-.timeline-container h2 {
-    margin-top: 24px; 
-    margin-bottom: 60px; /* space between title and timeline */
-    font-size: 2rem;
+/* Title spacing control */
+.timeline-container h2,
+section > h2 {
+  margin-top: 28px;
+  margin-bottom: 48px;          /* extra space between title and timeline */
+  font-size: 2rem;
+  z-index: 1;
 }
 
-/* Timeline wrapper */
+/* Scrollable timeline area: only this scrolls if content overflows */
 .timeline {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    padding: 20px 0;
-    margin: 0 auto;
-    z-index: 1;
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px 0;
+  z-index: 1;
+  /* limit height so it fits in viewport and becomes scrollable internally */
+  max-height: calc(100vh - 160px); /* 160px accounts for title + paddings; tuned for most phones */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Center vertical line */
+/* vertical center line (brighter) */
 .timeline::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    background: rgba(245,245,245,0.7); /* brighter line */
-    z-index: 1;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  background: rgba(245,245,245,0.75); /* brighter so it's visible */
+  z-index: 1;
 }
 
-/* Timeline items */
+/* each timeline row is full-width; vertical spacing increased */
 .timeline-item {
-    position: relative;
-    width: 100%;
-    padding: 80px 0; /* vertical spacing between circles */
-    min-height: 60px;
+  position: relative;
+  width: 100%;
+  padding: 56px 12px;    /* vertical spacing between circles; increase to add space */
+  min-height: 80px;
 }
 
-/* Circle thumbnails */
-.timeline-item .circle {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 48px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid rgba(245,245,245,0.95);
-    background: #444;
-    z-index: 3;
-    cursor: pointer;
+/* circle thumbnail (supports <div class="circle"><img/></div> or <img class="thumb">) */
+.timeline-item .circle,
+.timeline-item > img.thumb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  aspect-ratio: 1/1;     /* perfect circle, no stretching */
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(245,245,245,0.95);
+  background: #333;
+  z-index: 3;
+  cursor: pointer;
 }
-.timeline-item .circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.timeline-item .circle img,
+.timeline-item > img.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* Labels staggered left/right */
+/* label / name (plain text, no visible box) */
 .timeline-item .content {
-    position: absolute;
-    top: 0;
-    font-size: 16px;
-    color: #f5f5f5;
-    max-width: 46%;
-    line-height: 1.2;
-    z-index: 2;
-}
-.timeline-item.left .content {
-    right: calc(50% + 60px);
-    text-align: right;
-}
-.timeline-item.right .content {
-    left: calc(50% + 60px);
-    text-align: left;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #f5f5f5;
+  max-width: 46%;
+  line-height: 1.2;
+  z-index: 2;
+  background: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Modal popup */
+/* stagger labels to left / right of center line on desktop */
+.timeline-item.left .content  { right: calc(50% + 64px); text-align: right; }
+.timeline-item.right .content { left:  calc(50% + 64px); text-align: left; }
+
+/* ---- Mobile stagger behaviour ----
+   On narrow screens keep labels near the center line but staggered
+*/
+@media (max-width: 768px) {
+  /* keep timeline scrollable area a bit taller so title + timeline better fit */
+  .timeline { max-height: calc(100vh - 120px); }
+
+  /* mobile: alternate labels using nth-child to keep stagger */
+  .timeline-item:nth-child(odd)  .content { right: 60px; left: auto; text-align: right; }
+  .timeline-item:nth-child(even) .content { left: 60px; right: auto; text-align: left; }
+
+  /* slightly smaller circles on small phones */
+  .timeline-item .circle,
+  .timeline-item > img.thumb { width: 44px; }
+  .timeline-item { padding: 44px 8px; }
+}
+
+/* very small phones */
+@media (max-width: 420px) {
+  .timeline { max-height: calc(100vh - 110px); }
+  .timeline-item .circle,
+  .timeline-item > img.thumb { width: 40px; }
+  .timeline-item { padding: 36px 6px; }
+  .timeline-item .content { font-size: 14px; max-width: 48%; }
+}
+
+/* =========================
+   Modal (centered overlay)
+   ========================= */
 .modal {
-    display: none; 
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,0.6);
-    z-index: 9999;
-    padding: 16px;
+  display: none; /* shown with JS */
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  padding: 20px;
 }
 .modal .modal-content {
-    width: 100%;
-    max-width: 560px;
-    background: #0f0f0f;
-    border-radius: 12px;
-    padding: 16px;
-    color: #f5f5f5;
-    position: relative;
+  width: 100%;
+  max-width: 560px;
+  background: #0f0f0f;
+  border-radius: 12px;
+  padding: 16px;
+  color: #f5f5f5;
+  position: relative;
 }
-.modal .modal-content img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 12px 0;
-}
-.modal .close {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-}
+.modal .modal-content img { width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
+.modal .close { position: absolute; top: 10px; right: 12px; font-size: 20px; cursor: pointer; }
 
-/* ============================
-   Responsive tweaks
-   ============================ */
-@media (max-width: 768px) {
-    /* Mobile: stagger labels */
-    .timeline-item:nth-child(odd) .content {
-        text-align: right;
-        right: 60px;
-        left: auto;
-    }
-    .timeline-item:nth-child(even) .content {
-        text-align: left;
-        left: 60px;
-        right: auto;
-    }
-    .timeline-item .circle {
-        top: 0;
-    }
-}
-
-@media (max-width: 420px) {
-    .timeline-item .content {
-        font-size: 14px;
-    }
-}
+/* utility: ensure any page titles are white and spaced nicely */
+h1, h2 { color: #f5f5f5 !important; }
