@@ -22,25 +22,28 @@ html, body {
 
 /* Background + overlay for all pages */
 body {
-    background: url("images/scenic.png") no-repeat center center fixed;
+    background: url("images/scenic.png") no-repeat center center;
     background-size: cover;
     position: relative;
+    min-height: 100vh;
 }
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     background: rgba(18,18,18,0.75);
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
 }
 
 /* All headings and paragraphs inherit white */
 h1, h2, h3, h4, h5, h6, p, button, span, li {
-    color: #f5f5f5 !important;
+    color: #f5f5f5;
 }
 
-/* ========== Run It Back Page ========== */
+/* =====================
+   Run It Back Page
+   ===================== */
 .centered-page {
     display: flex;
     flex-direction: column;
@@ -72,7 +75,9 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* ========== Timeline Page ========== */
+/* =====================
+   Timeline Page
+   ===================== */
 .timeline-container {
     display: flex;
     flex-direction: column;
@@ -83,7 +88,7 @@ button:hover {
 
 .timeline-container h2 {
     margin-top: 24px; 
-    margin-bottom: 40px; 
+    margin-bottom: 60px; /* increased space */
     font-size: 2rem;
 }
 
@@ -114,7 +119,7 @@ button:hover {
 .timeline-item {
     position: relative;
     width: 100%;
-    padding: 24px 0;
+    padding: 60px 0; /* increased vertical space */
     min-height: 60px;
 }
 
@@ -128,7 +133,7 @@ button:hover {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #f5f5f5;
+    border: 3px solid rgba(245,245,245,0.95);
     background: #444;
     z-index: 3;
     cursor: pointer;
@@ -152,11 +157,11 @@ button:hover {
     z-index: 2;
 }
 .timeline-item.left .content {
-    right: calc(50% + 70px);
+    right: calc(50% + 60px);
     text-align: right;
 }
 .timeline-item.right .content {
-    left: calc(50% + 70px);
+    left: calc(50% + 60px);
     text-align: left;
 }
 
@@ -199,16 +204,22 @@ button:hover {
    Responsive tweaks
    ============================ */
 @media (max-width: 768px) {
-    .timeline-item .content {
-        max-width: 80%;
-        text-align: left !important; /* stagger left/right kept */
-        left: auto !important;
-        right: auto !important;
-        transform: none !important;
-        margin-left: 0;
-        margin-right: 0;
+    /* Mobile: stagger labels */
+    .timeline-item:nth-child(odd) .content {
+        text-align: right;
+        right: 60px;
+        left: auto;
+    }
+    .timeline-item:nth-child(even) .content {
+        text-align: left;
+        left: 60px;
+        right: auto;
+    }
+    .timeline-item .circle {
+        top: 0;
     }
 }
+
 @media (max-width: 420px) {
     .timeline-item .content {
         font-size: 14px;
