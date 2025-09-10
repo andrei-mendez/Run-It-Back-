@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Let's revisit shall we?</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
 </head>
 <body>
-  <section>
-    <h2>Let's Revisit Shall We?????</h2>
-    <div class="timeline">
+  <!-- Wrap the timeline in the timeline-container so spacing & scroll works -->
+  <section class="timeline-container">
+    <h2>Let's Revisit Shall We?</h2>
 
+    <div class="timeline">
       <!-- Timeline points -->
       <div class="timeline-item left">
         <div class="circle" onclick="showEvent(1)">
-          <img src="images/coffee-thumb.jpg" alt="Coffee Date">
+          <img src="images/coffee-thumb.jpg" alt="Coffee Date" />
         </div>
         <div class="content">
           <p>Date 1 - Coffee Shop ☕</p>
@@ -24,7 +25,7 @@
 
       <div class="timeline-item right">
         <div class="circle" onclick="showEvent(2)">
-          <img src="images/movie-thumb.jpg" alt="Movie Night">
+          <img src="images/movie-thumb.jpg" alt="Movie Night" />
         </div>
         <div class="content">
           <p>Date 2 - Movie Night 🎬</p>
@@ -33,7 +34,7 @@
 
       <div class="timeline-item left">
         <div class="circle" onclick="showEvent(3)">
-          <img src="images/park-thumb.jpg" alt="Amusement Park">
+          <img src="images/park-thumb.jpg" alt="Amusement Park" />
         </div>
         <div class="content">
           <p>Date 3 - Amusement Park 🎡</p>
@@ -42,7 +43,7 @@
 
       <div class="timeline-item right">
         <div class="circle" onclick="showEvent(4)">
-          <img src="images/beach-thumb.jpg" alt="Beach Walk">
+          <img src="images/beach-thumb.jpg" alt="Beach Walk" />
         </div>
         <div class="content">
           <p>Date 4 - Beach Walk 🌊</p>
@@ -51,26 +52,25 @@
 
       <div class="timeline-item left">
         <div class="circle" onclick="showEvent(5)">
-          <img src="images/concert-thumb.jpg" alt="Concert">
+          <img src="images/concert-thumb.jpg" alt="Concert" />
         </div>
         <div class="content">
           <p>Date 5 - Concert 🎶</p>
         </div>
       </div>
-
     </div>
 
     <div class="btn-group">
-      <button onclick="location.href='reflection.html'">Next ➡️</button>
+      <button onclick="location.href='what-i-did-wrong.html'">Next ➡️</button>
     </div>
   </section>
 
   <!-- Modal overlay -->
-  <div id="eventModal" class="modal">
+  <div id="eventModal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h3 id="eventTitle"></h3>
-      <img id="eventImage" src="" alt="Event">
+      <img id="eventImage" src="" alt="Event" />
       <p id="eventDescription"></p>
     </div>
   </div>
