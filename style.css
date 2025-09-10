@@ -1,62 +1,67 @@
 /* ============================
    style.css — Full replacement
-   — fixes label overlap, circle positions, and page centering
+   - All text white
+   - Background works on iPhone (no fixed)
+   - Timeline scrolls internally (page does not scroll past the bg)
+   - Circles centered; labels outside circles (no overlap)
+   - Increased spacing
+   - .reflection-page and .final-page centered
    ============================ */
 
 /* Reset */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Root vars — tune these if you want bigger/smaller circles or spacing */
+/* Root variables - tune sizes/gaps here */
 :root{
   --circle-size-desktop: 48px;
   --gap-desktop: 16px;
-  --circle-size-mobile: 42px;
+  --circle-size-mobile: 40px;
   --gap-mobile: 12px;
 }
 
-/* Base page settings */
+/* Base page */
 html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
-  color: #f5f5f5;            /* white text everywhere */
+  color: #ffffff;             /* white */
+  background-color: #121212;  /* fallback */
   text-align: center;
-  overflow-x: hidden;        /* no horizontal scrolling */
-  background-color: #121212; /* fallback */
+  overflow-x: hidden;         /* prevent horizontal scroll */
 }
 
-/* Background image (no `fixed` — works reliably on iPhone) */
-body {
+/* Background image (no 'fixed' to avoid iOS issues) */
+body{
   background: url("images/scenic.png") no-repeat center center;
   background-size: cover;
   min-height: 100vh;
   position: relative;
 }
 
-/* Dark overlay behind content (keeps text readable) */
-body::before {
+/* Dark overlay behind content (kept under content) */
+body::before{
   content: "";
   position: fixed;
   inset: 0;
   background: rgba(18,18,18,0.75);
-  z-index: 0;                /* behind content */
+  z-index: 0;               /* behind main content */
   pointer-events: none;
 }
 
-/* Make sure main content sits above the overlay */
-section, .timeline-container, .centered-page,
-.full-centered, .reflection-page, .final-page,
-.timeline, .modal {
+/* Ensure main content renders above overlay */
+main, section, .timeline-container, .modal, header, footer {
   position: relative;
   z-index: 1;
 }
 
 /* Force headings/paragraphs/buttons white */
-h1,h2,h3,h4,h5,h6,p,button,span,li { color: #f5f5f5 !important; }
+h1,h2,h3,h4,h5,h6,p,button,span,li {
+  color: #ffffff !important;
+}
 
-/* ----------------------------
-   First page: keep unchanged (full-screen centered)
-   ---------------------------- */
+/* -------------------------
+   First page (Run it Back) - full-screen centered
+   ------------------------- */
 .centered-page {
   display: flex;
   align-items: center;
@@ -64,25 +69,17 @@ h1,h2,h3,h4,h5,h6,p,button,span,li { color: #f5f5f5 !important; }
   flex-direction: column;
   min-height: 100vh;
   height: 100vh;
-  overflow: hidden; /* prevent whole-page scroll on mobile */
   padding: 20px;
+  overflow: hidden; /* prevents whole page scroll */
 }
-.centered-page h1 { font-size: 2.8rem; line-height: 1.05; margin-bottom: 18px; }
+.centered-page h1 { font-size: 2.8rem; margin-bottom: 18px; }
 
-/* ----------------------------
-   Reflection & Final pages (center content vertically + horizontally)
-   Usage: add class "reflection-page" or "final-page" to the <body> or a root <section>.
-   ---------------------------- */
+/* -------------------------
+   Reflection & Final pages (centered both axes)
+   Apply class "reflection-page" or "final-page" to <body> or <section>
+   ------------------------- */
 .reflection-page,
-.final-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-}
-
-/* When you want to center just a block inside the page, place it in .full-centered */
+.final-page,
 .full-centered {
   display: flex;
   align-items: center;
@@ -91,12 +88,10 @@ h1,h2,h3,h4,h5,h6,p,button,span,li { color: #f5f5f5 !important; }
   padding: 20px;
 }
 
-/* ----------------------------
-   Buttons
-   ---------------------------- */
+/* Buttons */
 button {
   background-color: rgba(30,30,30,0.95);
-  color: #f5f5f5;
+  color: #fff;
   border: 2px solid rgba(255,255,255,0.08);
   padding: 12px 20px;
   margin: 8px;
@@ -105,43 +100,44 @@ button {
   cursor: pointer;
 }
 
-/* ----------------------------
+/* =========================
    TIMELINE
-   - timeline scrolls internally on mobile (page not scrolled)
-   ---------------------------- */
+   - timeline scrolls internally
+   ========================= */
 
-/* Wrapper so we can space title and timeline area */
+/* Wrapper: put title + timeline inside this */
 .timeline-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  padding: 20px;
+  padding: 18px;
 }
 
-.timeline-container h2 {
+/* Title spacing */
+.timeline-container h2,
+section > h2 {
   margin-top: 28px;
-  margin-bottom: 48px; /* extra space between title and timeline */
+  margin-bottom: 48px;   /* more space between title & timeline */
   font-size: 2rem;
-  z-index: 1;
 }
 
-/* Scrollable timeline area (only this area scrolls if long) */
+/* Scrollable timeline area */
 .timeline {
   position: relative;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  padding: 10px 0;
+  padding: 8px 0;
   z-index: 1;
-  /* Give it a max-height so it can scroll independently on small screens */
-  max-height: calc(100vh - 170px); /* tuned to leave room for title + padding */
+  /* limit height so only timeline scrolls */
+  max-height: calc(100vh - 170px); /* reserve space for title/padding */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* vertical center line (brighter for visibility) */
+/* center vertical line (brighter) */
 .timeline::after {
   content: "";
   position: absolute;
@@ -150,34 +146,30 @@ button {
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  background: rgba(245,245,245,0.75);
+  background: rgba(255,255,255,0.75); /* bright */
   z-index: 1;
 }
 
-/* timeline row */
+/* timeline row spacing */
 .timeline-item {
   position: relative;
   width: 100%;
-  padding: 56px 12px;  /* vertical spacing between circles */
+  padding: 56px 12px;    /* vertical space between circles (tweak if needed) */
   min-height: 80px;
 }
 
-/* --- circle position logic:
-   use CSS variables that change at a mobile breakpoint.
-   offset is calculated from circle radius plus a gap so labels never overlap.
-*/
+/* circle thumbnail: centered on the vertical line, perfectly square */
 .timeline-item .circle,
 .timeline-item > img.thumb {
-  --circle-size: var(--circle-size-desktop);
-  width: var(--circle-size);
+  width: var(--circle-size-desktop);
   aspect-ratio: 1/1;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid rgba(245,245,245,0.95);
+  border: 3px solid rgba(255,255,255,0.95);
   background: #333;
   z-index: 3;
   cursor: pointer;
@@ -190,74 +182,66 @@ button {
   display: block;
 }
 
-/* label placement: compute an offset so label sits outside the circle edge
-   offset = (circle_size / 2) + gap  */
-.timeline-item .content {
+/* label (text) — positioned outside the circle using calc offset */
+.timeline-item .content{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
-  color: #f5f5f5;
-  max-width: calc(50% - 32px);
+  color: #fff;
   line-height: 1.2;
   z-index: 2;
-  background: none;
+  max-width: 46%;
 }
 
-/* Desktop: compute offset using desktop vars */
-:root {
-  --circle-size-desktop: 48px;
-  --gap-desktop: 16px;
+/* compute desktop offset from center (radius + gap) */
+:root{
   --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
 }
 
-/* Left/right labels use calc relative to center line so they never overlap the circle */
-.timeline-item.left  .content { right: calc(50% + var(--offset-desktop)); text-align: right; }
+/* labels sit outside circle */
+.timeline-item.left .content  { right: calc(50% + var(--offset-desktop)); text-align: right; }
 .timeline-item.right .content { left:  calc(50% + var(--offset-desktop)); text-align: left; }
 
-/* MOBILE adjustments — change circle size and gap, but keep same math */
+/* -------------------------
+   Responsive adjustments
+   ------------------------- */
 @media (max-width: 768px) {
-  :root {
-    --circle-size-desktop: 42px; /* effectively the var used above */
-    --gap-desktop: 12px;
+  /* use mobile sizes */
+  :root{
+    --circle-size-desktop: var(--circle-size-mobile);
+    --gap-desktop: var(--gap-mobile);
     --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
   }
 
-  /* make timeline area slightly taller on mobile to help layout */
-  .timeline { max-height: calc(100vh - 150px); }
+  /* slightly less vertical padding so timeline fits better */
+  .timeline-item { padding: 44px 8px; min-height: 64px; }
 
-  /* keep circle centered vertically */
-  .timeline-item .circle,
-  .timeline-item > img.thumb {
-    width: var(--circle-size-desktop);
-    /* top remains 50% so it's vertically centered in the row */
-  }
-
-  /* On mobile, still position labels outside the circle using calc relative to center.
-     This prevents labels from starting inside the circle. */
-  .timeline-item.left  .content { right: calc(50% + var(--offset-desktop)); text-align: right; max-width: 46%; }
+  /* keep labels outside circle on mobile as well using same calc method */
+  .timeline-item.left .content  { right: calc(50% + var(--offset-desktop)); text-align: right; max-width: 46%; }
   .timeline-item.right .content { left:  calc(50% + var(--offset-desktop)); text-align: left;  max-width: 46%; }
 
-  /* decrease vertical spacing a bit on smaller screens */
-  .timeline-item { padding: 44px 8px; min-height: 64px; }
+  /* smaller circle on phones */
+  .timeline-item .circle,
+  .timeline-item > img.thumb { width: var(--circle-size-desktop); }
 }
 
 /* very small phones */
-@media (max-width: 420px) {
-  :root { --circle-size-desktop: 40px; --gap-desktop: 10px; --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop)); }
+@media (max-width: 420px){
+  :root{ --circle-size-desktop: 38px; --gap-desktop: 10px; --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop)); }
   .timeline { max-height: calc(100vh - 120px); }
   .timeline-item { padding: 36px 6px; min-height: 56px; }
   .timeline-item .content { font-size: 14px; max-width: 48%; }
 }
 
-/* Modal */
+/* Modal (centered overlay) */
 .modal {
   display: none;
   position: fixed;
   inset: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   background: rgba(0,0,0,0.6);
   z-index: 9999;
   padding: 20px;
@@ -268,11 +252,11 @@ button {
   background: #0f0f0f;
   border-radius: 12px;
   padding: 16px;
-  color: #f5f5f5;
+  color: #fff;
   position: relative;
 }
 .modal .modal-content img { width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
 .modal .close { position: absolute; top: 10px; right: 12px; font-size: 20px; cursor: pointer; }
 
-/* small utility to ensure titles are white */
-h1,h2 { color: #f5f5f5 !important; }
+/* ensure h1/h2 forced white */
+h1,h2 { color: #ffffff !important; }
