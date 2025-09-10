@@ -3,7 +3,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #121212;
+    background: url("images/scenic.jpg") no-repeat center center fixed;
+    background-size: cover;
     color: #f5f5f5;
     min-height: 100vh;
     text-align: center;
@@ -15,6 +16,8 @@ section {
     max-width: 900px;
     padding: 20px;
     margin: 0 auto;
+    background: rgba(18, 18, 18, 0.8); /* dark overlay for readability */
+    border-radius: 12px;
 }
 
 /* Buttons */
@@ -48,7 +51,7 @@ button:hover {
     content: '';
     position: absolute;
     width: 4px;
-    background-color: #444;
+    background-color: #f5f5f5;
     top: 0;
     bottom: 0;
     left: 50%;
@@ -77,7 +80,7 @@ button:hover {
     object-fit: cover;
 }
 
-/* Date name text (no background box) */
+/* Date name text (next to circle, no box) */
 .timeline-item .content {
     position: absolute;
     top: 20px;
@@ -91,19 +94,19 @@ button:hover {
 
 /* Left content */
 .timeline-item.left .content {
-    right: 55%; /* position text left of circle */
+    right: 55%;
     text-align: right;
 }
 
 /* Right content */
 .timeline-item.right .content {
-    left: 55%; /* position text right of circle */
+    left: 55%;
     text-align: left;
 }
 
-/* Modal overlay (always on top, centered) */
+/* Modal overlay */
 .modal {
-    display: none; /* important: hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -113,7 +116,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    display: flex;
 }
 
 /* Modal box */
@@ -151,13 +153,6 @@ button:hover {
         padding: 30px 0;
     }
 
-    /* Keep circles centered */
-    .timeline-item .thumb {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    /* Staggered content text boxes */
     .timeline-item.left .content {
         right: 55%;
         max-width: 40%;
