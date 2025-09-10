@@ -1,92 +1,83 @@
-/* =====================
-   Full style.css (replace existing)
-   ===================== */
+/* ============================
+   style.css — full replacement
+   Fixes: perfect circles, staggered labels,
+   circles always on center line (desktop + mobile)
+   ============================ */
 
-/* Basic reset & box-sizing */
+/* Reset & box-sizing */
 * { box-sizing: border-box; }
 
-/* Prevent horizontal scroll & ensure full-page sizing */
+/* Page baseline + prevent horizontal scroll */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden; /* no horizontal scrolling */
+  overflow-x: hidden;
   font-family: Arial, sans-serif;
   color: #f5f5f5;
   text-align: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Background image (use scenic.png inside images/ folder).
-   NOTE: do NOT use `fixed` here — causes issues on iOS Safari. */
+/* Background and full-screen dark overlay (overlay via ::before) */
 body {
   background: url("images/scenic.png") no-repeat center center;
   background-size: cover;
-  background-color: #121212; /* fallback color */
+  background-color: #121212;
   position: relative;
 }
-
-/* Full-screen dark overlay that sits ABOVE the background and BELOW page content.
-   We use z-index: 0 for overlay and give main content z-index: 1 so overlay doesn't block clicks. */
 body::before {
   content: "";
   position: fixed;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  inset: 0;                      /* top:0; right:0; bottom:0; left:0; */
   background: rgba(18,18,18,0.75);
   z-index: 0;
-  pointer-events: none; /* overlay doesn't intercept clicks */
+  pointer-events: none;
 }
 
-/* Ensure page content is stacked above the overlay */
+/* Ensure content sits above overlay */
 section, .page, .container {
   position: relative;
   z-index: 1;
 }
 
-/* ------------------------
-   Run it Back (centered)
-   ------------------------ */
+/* Root variables for easy tuning */
+:root{
+  --circle-size: 48px;   /* base circle diameter */
+  --circle-gap: 12px;    /* gap between circle edge and label */
+  --offset: calc((var(--circle-size) / 2) + var(--circle-gap));
+}
+
+/* Shared buttons */
+button {
+  background-color: rgba(30,30,30,0.95);
+  color: #f5f5f5;
+  border: 2px solid rgba(255,255,255,0.08);
+  padding: 12px 20px;
+  margin: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ---------- Run-it-back center helper ---------- */
 .centered-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* center vertically */
+  min-height: 100vh;
   padding: 20px;
 }
+.centered-page h1 { font-size: 2.6rem; margin: 0 0 14px 0; }
 
-/* Title sizing for first page */
-.centered-page h1 {
-  font-size: 2.8rem;
-  margin: 0 0 18px 0;
-  line-height: 1.05;
-}
-
-/* Buttons (shared) */
-button {
-  background-color: rgba(30,30,30,0.95);
-  color: #f5f5f5;
-  border: 2px solid rgba(245,245,245,0.12);
-  padding: 12px 22px;
-  margin: 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: transform .12s ease, background .12s ease;
-}
-button:hover { transform: translateY(-2px); }
-
-/* ------------------------
-   Timeline layout
-   ------------------------ */
+/* ---------- Timeline ---------- */
 .timeline {
   position: relative;
   max-width: 900px;
   margin: 36px auto;
-  padding: 20px;
-  z-index: 1; /* above overlay */
+  padding: 18px;
+  z-index: 1;
 }
 
 /* center vertical line */
@@ -98,48 +89,39 @@ button:hover { transform: translateY(-2px); }
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  background: rgba(245,245,245,0.18);
+  background: rgba(245,245,245,0.16);
   z-index: 1;
 }
 
-/* each event row is full width and relative so dot/content can be positioned.
-   using full-width avoids left:50% issues that broke alignment. */
+/* each row is full width to avoid left:50% container confusion */
 .timeline-item {
   position: relative;
   width: 100%;
-  padding: 26px 10px;
-  min-height: 56px;
+  padding: 24px 8px;
+  min-height: calc(var(--circle-size) + 12px);
 }
 
-/* dot (thumbnail) — support both patterns:
-   - <div class="circle"><img src="..."></div>
-   - <img class="thumb" src="...">
-   Both will be positioned and styled the same. */
-:root {
-  --circle-size: 48px;
-  --circle-gap: 12px; /* gap between dot and text */
-  --offset-calc: 36px; /* half circle (24) + gap (12) = 36 */
-}
-
-/* .circle block (if you use a wrapper div) */
+/* Circle / thumbnail
+   - supports:
+       <div class="circle"><img src="..."></div>
+     OR
+       <img class="thumb" src="...">
+   - uses aspect-ratio so it's never stretched */
 .timeline-item .circle,
 .timeline-item > img.thumb {
   position: absolute;
-  top: 50%;
   left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
   width: var(--circle-size);
-  height: var(--circle-size);
-  transform: translate(-50%, -50%);
+  aspect-ratio: 1 / 1;       /* guarantees perfect circle */
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(245,245,245,0.95);
   background: #333;
   z-index: 3;
   cursor: pointer;
-  object-fit: cover;
 }
-
-/* if you used a wrapper .circle with img inside */
 .timeline-item .circle img,
 .timeline-item > img.thumb {
   width: 100%;
@@ -148,116 +130,70 @@ button:hover { transform: translateY(-2px); }
   display: block;
 }
 
-/* event label (plain text, no box) */
+/* Event label (plain text, no visible box) */
 .timeline-item .content {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
   color: #f5f5f5;
-  max-width: 44%;
+  max-width: 46%;
   line-height: 1.2;
   z-index: 2;
-  background: none;  /* explicitly remove any box/backdrop */
-  border: none;
+  background: none;
   padding: 0;
+  margin: 0;
 }
 
-/* left and right placement — text sits right next to dot */
+/* Stagger left / right: label is placed immediately next to the circle.
+   Using calc(50% + var(--offset)) keeps the circle centered and positions the label next to it. */
 .timeline-item.left .content {
-  right: calc(50% + var(--offset-calc)); /* left side of center line */
+  right: calc(50% + var(--offset));  /* place on left side */
   text-align: right;
 }
 .timeline-item.right .content {
-  left: calc(50% + var(--offset-calc));  /* right side of center line */
+  left: calc(50% + var(--offset));   /* place on right side */
   text-align: left;
 }
 
-/* small screens: reduce max-width and offsets so nothing overflows */
-@media (max-width: 700px) {
-  :root {
-    --circle-size: 44px;
-    --circle-gap: 10px;
-    --offset-calc: 32px;
-  }
+/* If text is long, allow wrapping but keep it tight */
+.timeline-item .content span,
+.timeline-item .content p { display: inline-block; margin:0; }
 
-  .timeline {
-    padding: 12px;
-    margin: 20px auto;
-  }
-
-  .timeline-item {
-    padding: 20px 6px;
-    min-height: 64px;
-  }
-
-  .timeline-item .content {
-    max-width: 46%;
-    font-size: 15px;
-  }
-
-  .timeline-item.left .content {
-    right: calc(50% + var(--offset-calc));
-  }
-  .timeline-item.right .content {
-    left: calc(50% + var(--offset-calc));
-  }
-
-  /* ensure the center line stays visible */
-  .timeline::after { left: 50%; }
-}
-
-/* very small phones: allow labels to wrap sooner */
-@media (max-width: 420px) {
-  .timeline-item .content { max-width: 48%; font-size: 14px; }
-}
-
-/* ------------------------
-   Modal (centered, overlayed)
-   ------------------------ */
-/* We put the modal above everything (very high z-index) */
+/* ---------- Modal (centered overlay, does not push content) ---------- */
 .modal {
-  display: none; /* keep hidden until JS sets display */
+  display: none;            /* show via JS when clicked */
   position: fixed;
-  inset: 0;                 /* full-screen area */
+  inset: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.6); /* darker layer for modal */
+  align-items: center;
+  background: rgba(0,0,0,0.6);
   z-index: 9999;
-  padding: 18px;
+  padding: 16px;
 }
-
-/* modal card */
 .modal .modal-box {
   width: 100%;
   max-width: 560px;
   background: #0f0f0f;
   border-radius: 12px;
-  padding: 18px;
+  padding: 16px;
+  color: #f5f5f5;
   position: relative;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  color: #f5f5f5;
 }
-.modal .modal-box img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  display:block;
-  margin: 12px 0;
-}
-/* close X */
-.modal .close {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 22px;
-  color: #f5f5f5;
-  cursor: pointer;
-}
+.modal .modal-box img { width: 100%; height: auto; border-radius:8px; margin: 12px 0; }
+.modal .close { position: absolute; top: 8px; right: 10px; font-size: 20px; cursor: pointer; }
 
-/* utility: make sure all page text is centered by default */
-h1,h2,h3,p {
-  margin: 0;
-  padding: 0;
+/* ---------- Responsive adjustments ---------- */
+@media (max-width: 700px) {
+  :root { --circle-size: 42px; --circle-gap: 10px; }
+  .timeline { padding: 12px; margin: 18px auto; }
+  .timeline-item { padding: 18px 6px; }
+  .timeline-item .content { max-width: 46%; font-size: 15px; }
+  .timeline-item.left .content { right: calc(50% + var(--offset)); }
+  .timeline-item.right .content { left: calc(50% + var(--offset)); }
+}
+@media (max-width: 420px) {
+  :root { --circle-size: 38px; --circle-gap: 8px; }
+  .timeline-item .content { max-width: 48%; font-size: 14px; }
 }
