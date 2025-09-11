@@ -1,14 +1,7 @@
 /* ============================
    style.css — Full replacement
-   ============================
-   - All text white
-   - Background works on iPhone (no fixed)
-   - Timeline scrolls internally (page does not scroll past the bg)
-   - Circles show images properly (perfect circles)
-   - Labels don’t overlap circles
-   - Reflection & Final pages centered
-   - Modal supports responsive images and video
-================================*/
+   Fix: vertical line now reaches the centers of first & last circles
+   ============================ */
 
 /* Reset */
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,12 +20,12 @@ html, body {
   height: 100%;
   font-family: Arial, sans-serif;
   color: #ffffff;
-  background-color: #121212; /* fallback */
+  background-color: #121212;
   text-align: center;
   overflow-x: hidden;
 }
 
-/* Background image (no 'fixed' so iOS doesn’t glitch) */
+/* Background image */
 body {
   background: url("images/scenic.png") no-repeat center center;
   background-size: cover;
@@ -40,7 +33,7 @@ body {
   position: relative;
 }
 
-/* Dark overlay behind content (kept under content) */
+/* Dark overlay behind content */
 body::before {
   content: "";
   position: fixed;
@@ -50,20 +43,18 @@ body::before {
   pointer-events: none;
 }
 
-/* Make sure content is above overlay */
+/* Ensure content above overlay */
 main, section, .timeline-container, .modal, header, footer {
   position: relative;
   z-index: 1;
 }
 
-/* Force headings/paragraphs/buttons white */
+/* Force white text */
 h1,h2,h3,h4,h5,h6,p,button,span,li {
   color: #ffffff !important;
 }
 
-/* -------------------------
-   First page (Run it Back)
-   ------------------------- */
+/* First page */
 .centered-page {
   display: flex;
   align-items: center;
@@ -76,9 +67,7 @@ h1,h2,h3,h4,h5,h6,p,button,span,li {
 }
 .centered-page h1 { font-size: 2.8rem; margin-bottom: 18px; }
 
-/* -------------------------
-   Reflection & Final pages
-   ------------------------- */
+/* Reflection & final pages */
 .reflection-page,
 .final-page {
   display: flex;
@@ -131,29 +120,33 @@ button {
   max-width: 900px;
   margin: 0 auto;
   padding: 8px 0;
-  max-height: calc(100vh - 170px); /* only timeline scrolls */
+  max-height: calc(100vh - 170px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Center vertical line */
+/* Center vertical line
+   LINE INSET FIX: inset top & bottom by half the circle so the line meets circle centers
+*/
 .timeline::after {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
   background: rgba(255,255,255,0.75);
   z-index: 1;
+
+  /* inset by half the circle size so line reaches the center of first/last circle */
+  top: calc(var(--circle-size-desktop) / 2);
+  bottom: calc(var(--circle-size-desktop) / 2);
 }
 
 /* Timeline item */
 .timeline-item {
   position: relative;
   width: 100%;
-  padding: 56px 12px; /* vertical spacing */
+  padding: 56px 12px;
   min-height: 80px;
 }
 
@@ -197,7 +190,7 @@ button {
   max-width: 46%;
 }
 
-/* Offsets */
+/* Offsets for label placement */
 :root {
   --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
 }
@@ -214,6 +207,12 @@ button {
     --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
   }
 
+  /* adjust the vertical inset of the line for mobile too */
+  .timeline::after {
+    top: calc(var(--circle-size-desktop) / 2);
+    bottom: calc(var(--circle-size-desktop) / 2);
+  }
+
   .timeline-item { padding: 44px 8px; min-height: 64px; }
   .timeline-item .content { font-size: 15px; }
 }
@@ -224,14 +223,20 @@ button {
     --gap-desktop: 10px;
     --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
   }
+
   .timeline { max-height: calc(100vh - 120px); }
   .timeline-item { padding: 36px 6px; min-height: 56px; }
   .timeline-item .content { font-size: 14px; max-width: 48%; }
+
+  /* ensure mobile inset updated on smallest screens */
+  .timeline::after {
+    top: calc(var(--circle-size-desktop) / 2);
+    bottom: calc(var(--circle-size-desktop) / 2);
+  }
 }
 
 /* =========================
-   MODAL
-   - Responsive media sizing, image/video support
+   MODAL (responsive media)
    ========================= */
 .modal {
   display: none;
@@ -243,8 +248,6 @@ button {
   z-index: 9999;
   padding: 20px;
 }
-
-/* Modal content container: limit height and show scroll inside media-wrapper if necessary */
 .modal .modal-content {
   width: 100%;
   max-width: 720px;
@@ -259,8 +262,6 @@ button {
   align-items: center;
   overflow: hidden;
 }
-
-/* area where JS will inject <img> or <video> */
 .modal .media-wrapper {
   width: 100%;
   display: flex;
@@ -269,8 +270,6 @@ button {
   flex: 1 1 auto;
   overflow: auto;
 }
-
-/* media sizing */
 .modal .media-wrapper img,
 .modal .media-wrapper video {
   max-width: 100%;
@@ -281,14 +280,11 @@ button {
   display: block;
   border-radius: 8px;
 }
-
-/* small screens: slightly smaller modal */
 @media (max-width: 420px) {
   .modal .modal-content { max-width: 92vw; padding: 12px; }
   .modal .media-wrapper img,
   .modal .media-wrapper video { max-height: calc(70vh); }
 }
-
 .modal .close {
   position: absolute;
   top: 10px;
@@ -297,5 +293,5 @@ button {
   cursor: pointer;
 }
 
-/* ensure h1/h2 forced white */
+/* enforce white titles */
 h1,h2 { color: #ffffff !important; }
