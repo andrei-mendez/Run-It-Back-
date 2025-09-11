@@ -1,179 +1,297 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Let's revisit shall we?</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <!-- Wrap the timeline in the timeline-container so spacing & scroll works -->
-  <section class="timeline-container">
-    <h2>Let's Revisit Shall We?</h2>
+/* ============================
+   style.css — Full replacement
+   Fix: vertical line now reaches the centers of first & last circles
+   ============================ */
 
-    <div class="timeline">
-      <!-- Timeline points -->
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(1)">
-          <img src="images/1.PNG" alt="Whiskey Dicks" />
-        </div>
-        <div class="content">
-          <p>June 19th - Whiskey Dicks</p>
-        </div>
-      </div>
+/* Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(2)">
-          <img src="images/2.JPG" alt="Birthday Party" />
-        </div>
-        <div class="content">
-          <p>June 21st - Your Birthday Party</p>
-        </div>
-      </div>
+/* Root variables - sizes & gaps */
+:root {
+  --circle-size-desktop: 56px;
+  --gap-desktop: 20px;
+  --circle-size-mobile: 44px;
+  --gap-mobile: 14px;
+}
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(3)">
-          <img src="images/IMG_1711.jpg" alt="Pickleball" />
-        </div>
-        <div class="content">
-          <p>June 26th - Pickleball and Whiskeys Again</p>
-        </div>
-      </div>
+/* Base page */
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  background-color: #121212;
+  text-align: center;
+  overflow-x: hidden;
+}
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(4)">
-          <img src="images/3.jpg" alt="Squid Game Watch Party" />
-        </div>
-        <div class="content">
-          <p>June 27th - Squid Game Watch Party</p>
-        </div>
-      </div>
+/* Background image */
+body {
+  background: url("images/scenic.png") no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+}
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(5)">
-          <img src="images/IMG_2193.jpg" alt="Backyard Jam" />
-        </div>
-        <div class="content">
-          <p>July 1st - Two Man W Alan/Paris in Backyard</p>
-        </div>
-      </div>
+/* Dark overlay behind content */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(18,18,18,0.75);
+  z-index: 0;
+  pointer-events: none;
+}
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(6)">
-          <img src="images/4.jpg" alt="Whiskeys Again" />
-        </div>
-        <div class="content">
-          <p>July 3rd - Whiskeys Again lol</p>
-        </div>
-      </div>
+/* Ensure content above overlay */
+main, section, .timeline-container, .modal, header, footer {
+  position: relative;
+  z-index: 1;
+}
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(7)">
-          <img src="images/5.JPG" alt="Fourth of July" />
-        </div>
-        <div class="content">
-          <p>July 4th - Fourth of July</p>
-        </div>
-      </div>
+/* Force white text */
+h1,h2,h3,h4,h5,h6,p,button,span,li {
+  color: #ffffff !important;
+}
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(8)">
-          <img src="images/IMG_2194.jpg" alt="Sleepover" />
-        </div>
-        <div class="content">
-          <p>July 5th - Sleep Over at Yours?????</p>
-        </div>
-      </div>
+/* First page */
+.centered-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+  padding: 20px;
+  overflow: hidden;
+}
+.centered-page h1 { font-size: 2.8rem; margin-bottom: 18px; }
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(9)">
-          <img src="images/6.JPG" alt="First Date & Kiss" />
-        </div>
-        <div class="content">
-          <p>July 7th - First Date & Kiss</p>
-        </div>
-      </div>
+/* Reflection & final pages */
+.reflection-page,
+.final-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+}
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(10)">
-          <img src="images/7.jpg" alt="Spikeball" />
-        </div>
-        <div class="content">
-          <p>July 8th - Spikeball/Lottery Tickets</p>
-        </div>
-      </div>
+/* Buttons */
+button {
+  background-color: rgba(30,30,30,0.95);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.08);
+  padding: 12px 20px;
+  margin: 8px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(11)">
-          <img src="images/8.jpg" alt="Second Date" />
-        </div>
-        <div class="content">
-          <p>July 12th - Second Date</p>
-        </div>
-      </div>
+/* =========================
+   TIMELINE
+   ========================= */
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(12)">
-          <!-- Note: script has event.img = "images/11.MOV" — MOV won't render in <img>.
-               Consider replacing with a thumbnail image like images/11.jpg -->
-          <img src="images/11.MOV" alt="Third Date (video)" />
-        </div>
-        <div class="content">
-          <p>July 15th - 3rd Date</p>
-        </div>
-      </div>
+/* Wrapper */
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 18px;
+}
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(13)">
-          <img src="images/9.JPG" alt="Vegas Day 1" />
-        </div>
-        <div class="content">
-          <p>July 17th - Vegas Day 1</p>
-        </div>
-      </div>
+/* Title spacing */
+.timeline-container h2 {
+  margin-top: 28px;
+  margin-bottom: 48px;
+  font-size: 2rem;
+}
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(14)">
-          <img src="images/SAM_1634.JPG" alt="Day Club / Diplo" />
-        </div>
-        <div class="content">
-          <p>July 18th - Day Club/Dipolo</p>
-        </div>
-      </div>
+/* Scrollable timeline */
+.timeline {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 0;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-      <div class="timeline-item left">
-        <div class="circle" onclick="showEvent(15)">
-          <img src="images/10.jpg" alt="Marshmello" />
-        </div>
-        <div class="content">
-          <p>July 19th - Marshmello</p>
-        </div>
-      </div>
+/* Center vertical line
+   LINE INSET FIX: inset top & bottom by half the circle so the line meets circle centers
+*/
+.timeline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  background: rgba(255,255,255,0.75);
+  z-index: 1;
 
-      <div class="timeline-item right">
-        <div class="circle" onclick="showEvent(16)">
-          <img src="images/12.jpg" alt="Zedd / Goodbye" />
-        </div>
-        <div class="content">
-          <p>July 20th - Zedd/Saying Goodbye</p>
-        </div>
-      </div>
-    </div>
+  /* inset by half the circle size so line reaches the center of first/last circle */
+  top: calc(var(--circle-size-desktop) / 2);
+  bottom: calc(var(--circle-size-desktop) / 2);
+}
 
-    <div class="btn-group">
-      <button onclick="location.href='reflection.html'">Next ➡️</button>
-    </div>
-  </section>
+/* Timeline item */
+.timeline-item {
+  position: relative;
+  width: 100%;
+  padding: 56px 12px;
+  min-height: 80px;
+}
 
-  <!-- Modal overlay -->
-  <div id="eventModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h3 id="eventTitle"></h3>
-      <img id="eventImage" src="" alt="Event" />
-      <p id="eventDescription"></p>
-    </div>
-  </div>
-</body>
-</html>
+/* Circle thumbnail */
+.timeline-item .circle {
+  width: var(--circle-size-desktop);
+  height: var(--circle-size-desktop);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255,255,255,0.95);
+  background: #333;
+  background-size: cover;
+  background-position: center;
+  z-index: 3;
+  cursor: pointer;
+}
+.timeline-item .circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* Labels outside circles */
+.timeline-item .content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  z-index: 2;
+  max-width: 46%;
+}
+
+/* Offsets for label placement */
+:root {
+  --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
+}
+.timeline-item.left .content  { right: calc(50% + var(--offset-desktop)); text-align: right; }
+.timeline-item.right .content { left:  calc(50% + var(--offset-desktop)); text-align: left; }
+
+/* -------------------------
+   Responsive adjustments
+   ------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --circle-size-desktop: var(--circle-size-mobile);
+    --gap-desktop: var(--gap-mobile);
+    --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
+  }
+
+  /* adjust the vertical inset of the line for mobile too */
+  .timeline::after {
+    top: calc(var(--circle-size-desktop) / 2);
+    bottom: calc(var(--circle-size-desktop) / 2);
+  }
+
+  .timeline-item { padding: 44px 8px; min-height: 64px; }
+  .timeline-item .content { font-size: 15px; }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --circle-size-desktop: 38px;
+    --gap-desktop: 10px;
+    --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
+  }
+
+  .timeline { max-height: calc(100vh - 120px); }
+  .timeline-item { padding: 36px 6px; min-height: 56px; }
+  .timeline-item .content { font-size: 14px; max-width: 48%; }
+
+  /* ensure mobile inset updated on smallest screens */
+  .timeline::after {
+    top: calc(var(--circle-size-desktop) / 2);
+    bottom: calc(var(--circle-size-desktop) / 2);
+  }
+}
+
+/* =========================
+   MODAL (responsive media)
+   ========================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  padding: 20px;
+}
+.modal .modal-content {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  background: #0f0f0f;
+  border-radius: 12px;
+  padding: 16px;
+  color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.modal .media-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.modal .media-wrapper img,
+.modal .media-wrapper video {
+  max-width: 100%;
+  max-height: calc(80vh);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+@media (max-width: 420px) {
+  .modal .modal-content { max-width: 92vw; padding: 12px; }
+  .modal .media-wrapper img,
+  .modal .media-wrapper video { max-height: calc(70vh); }
+}
+.modal .close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* enforce white titles */
+h1,h2 { color: #ffffff !important; }
