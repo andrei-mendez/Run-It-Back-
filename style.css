@@ -1,13 +1,13 @@
 /* ============================
    style.css — Full replacement
    ============================
-   ✔ All text is white
-   ✔ Background works on iPhone (no fixed)
-   ✔ Timeline scrolls internally (page does not scroll past the bg)
-   ✔ Circles show images properly (perfect circles)
-   ✔ Labels don’t overlap circles
-   ✔ Reflection & Final pages centered in screen
-   ✔ Extra spacing between items
+   - All text white
+   - Background works on iPhone (no fixed)
+   - Timeline scrolls internally (page does not scroll past the bg)
+   - Circles show images properly (perfect circles)
+   - Labels don’t overlap circles
+   - Reflection & Final pages centered
+   - Modal supports responsive images and video
 ================================*/
 
 /* Reset */
@@ -40,7 +40,7 @@ body {
   position: relative;
 }
 
-/* Dark overlay */
+/* Dark overlay behind content (kept under content) */
 body::before {
   content: "";
   position: fixed;
@@ -172,6 +172,8 @@ button {
   justify-content: center;
   border: 3px solid rgba(255,255,255,0.95);
   background: #333;
+  background-size: cover;
+  background-position: center;
   z-index: 3;
   cursor: pointer;
 }
@@ -229,6 +231,7 @@ button {
 
 /* =========================
    MODAL
+   - Responsive media sizing, image/video support
    ========================= */
 .modal {
   display: none;
@@ -240,21 +243,52 @@ button {
   z-index: 9999;
   padding: 20px;
 }
+
+/* Modal content container: limit height and show scroll inside media-wrapper if necessary */
 .modal .modal-content {
   width: 100%;
-  max-width: 560px;
+  max-width: 720px;
+  max-height: 90vh;
   background: #0f0f0f;
   border-radius: 12px;
   padding: 16px;
   color: #fff;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
 }
-.modal .modal-content img {
+
+/* area where JS will inject <img> or <video> */
+.modal .media-wrapper {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  overflow: auto;
 }
+
+/* media sizing */
+.modal .media-wrapper img,
+.modal .media-wrapper video {
+  max-width: 100%;
+  max-height: calc(80vh);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+
+/* small screens: slightly smaller modal */
+@media (max-width: 420px) {
+  .modal .modal-content { max-width: 92vw; padding: 12px; }
+  .modal .media-wrapper img,
+  .modal .media-wrapper video { max-height: calc(70vh); }
+}
+
 .modal .close {
   position: absolute;
   top: 10px;
@@ -262,3 +296,6 @@ button {
   font-size: 20px;
   cursor: pointer;
 }
+
+/* ensure h1/h2 forced white */
+h1,h2 { color: #ffffff !important; }
