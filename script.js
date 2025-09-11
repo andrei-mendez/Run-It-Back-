@@ -11,7 +11,7 @@ const events = {
   },
   3: {
     title: "Pickleball + Whiskeys Again",
-    img: "images/IMG_1711.JPG",
+    img: "images/IMG_1711.jpg",
     desc: "Played pickleball then headed back to Whiskeys for round two!"
   },
   4: {
