@@ -1,6 +1,6 @@
 /* ============================
    style.css — Full replacement
-   Fix: vertical line now reaches the centers of first & last circles
+   Fix: vertical line reaches the center of first & last circle reliably
    ============================ */
 
 /* Reset */
@@ -25,7 +25,7 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Background image */
+/* Background image (no fixed) */
 body {
   background: url("images/scenic.png") no-repeat center center;
   background-size: cover;
@@ -33,7 +33,7 @@ body {
   position: relative;
 }
 
-/* Dark overlay behind content */
+/* Dark overlay behind content (kept under content) */
 body::before {
   content: "";
   position: fixed;
@@ -43,18 +43,20 @@ body::before {
   pointer-events: none;
 }
 
-/* Ensure content above overlay */
+/* Make sure content is above overlay */
 main, section, .timeline-container, .modal, header, footer {
   position: relative;
   z-index: 1;
 }
 
-/* Force white text */
+/* Force headings/paragraphs/buttons white */
 h1,h2,h3,h4,h5,h6,p,button,span,li {
   color: #ffffff !important;
 }
 
-/* First page */
+/* -------------------------
+   First page (Run it Back)
+   ------------------------- */
 .centered-page {
   display: flex;
   align-items: center;
@@ -67,7 +69,9 @@ h1,h2,h3,h4,h5,h6,p,button,span,li {
 }
 .centered-page h1 { font-size: 2.8rem; margin-bottom: 18px; }
 
-/* Reflection & final pages */
+/* -------------------------
+   Reflection & Final pages
+   ------------------------- */
 .reflection-page,
 .final-page {
   display: flex;
@@ -113,21 +117,27 @@ button {
   font-size: 2rem;
 }
 
-/* Scrollable timeline */
+/* Scrollable timeline
+   NOTE: set top/bottom padding to half the circle size so the vertical
+         line can span from center of first circle to center of last circle.
+*/
 .timeline {
   position: relative;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  padding: 8px 0;
+
+  /* IMPORTANT: padding-top / padding-bottom to align line with circle centers */
+  padding-top: calc(var(--circle-size-desktop) / 2);
+  padding-bottom: calc(var(--circle-size-desktop) / 2);
+
+  /* internal spacing between rows is handled in .timeline-item */
   max-height: calc(100vh - 170px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Center vertical line
-   LINE INSET FIX: inset top & bottom by half the circle so the line meets circle centers
-*/
+/* Center vertical line spans the full padded area */
 .timeline::after {
   content: "";
   position: absolute;
@@ -136,17 +146,15 @@ button {
   width: 3px;
   background: rgba(255,255,255,0.75);
   z-index: 1;
-
-  /* inset by half the circle size so line reaches the center of first/last circle */
-  top: calc(var(--circle-size-desktop) / 2);
-  bottom: calc(var(--circle-size-desktop) / 2);
+  top: 0;    /* start at top of .timeline (which includes the half-circle padding) */
+  bottom: 0; /* end at bottom of .timeline (includes half-circle padding) */
 }
 
 /* Timeline item */
 .timeline-item {
   position: relative;
   width: 100%;
-  padding: 56px 12px;
+  padding: 56px 12px; /* vertical spacing between items */
   min-height: 80px;
 }
 
@@ -207,10 +215,10 @@ button {
     --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
   }
 
-  /* adjust the vertical inset of the line for mobile too */
-  .timeline::after {
-    top: calc(var(--circle-size-desktop) / 2);
-    bottom: calc(var(--circle-size-desktop) / 2);
+  /* update timeline padding to match changed circle size */
+  .timeline {
+    padding-top: calc(var(--circle-size-desktop) / 2);
+    padding-bottom: calc(var(--circle-size-desktop) / 2);
   }
 
   .timeline-item { padding: 44px 8px; min-height: 64px; }
@@ -224,15 +232,9 @@ button {
     --offset-desktop: calc((var(--circle-size-desktop) / 2) + var(--gap-desktop));
   }
 
-  .timeline { max-height: calc(100vh - 120px); }
+  .timeline { max-height: calc(100vh - 120px); padding-top: calc(var(--circle-size-desktop) / 2); padding-bottom: calc(var(--circle-size-desktop) / 2); }
   .timeline-item { padding: 36px 6px; min-height: 56px; }
   .timeline-item .content { font-size: 14px; max-width: 48%; }
-
-  /* ensure mobile inset updated on smallest screens */
-  .timeline::after {
-    top: calc(var(--circle-size-desktop) / 2);
-    bottom: calc(var(--circle-size-desktop) / 2);
-  }
 }
 
 /* =========================
@@ -248,6 +250,8 @@ button {
   z-index: 9999;
   padding: 20px;
 }
+
+/* Modal content container: limit height and show scroll inside media-wrapper if necessary */
 .modal .modal-content {
   width: 100%;
   max-width: 720px;
@@ -262,6 +266,8 @@ button {
   align-items: center;
   overflow: hidden;
 }
+
+/* media wrapper for injected image/video */
 .modal .media-wrapper {
   width: 100%;
   display: flex;
@@ -270,6 +276,8 @@ button {
   flex: 1 1 auto;
   overflow: auto;
 }
+
+/* media sizing */
 .modal .media-wrapper img,
 .modal .media-wrapper video {
   max-width: 100%;
@@ -280,11 +288,13 @@ button {
   display: block;
   border-radius: 8px;
 }
+
 @media (max-width: 420px) {
   .modal .modal-content { max-width: 92vw; padding: 12px; }
   .modal .media-wrapper img,
   .modal .media-wrapper video { max-height: calc(70vh); }
 }
+
 .modal .close {
   position: absolute;
   top: 10px;
