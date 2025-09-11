@@ -1,28 +1,83 @@
 const events = {
   1: {
-    title: "Coffee Shop ☕",
+    title: "Whiskey Dicks",
     img: "images/coffee.jpg",
-    desc: "Our very first coffee shop date ❤️"
+    desc: "The very first time we hung out — Whiskey Dicks night ❤️"
   },
   2: {
-    title: "Movie Night 🎬",
+    title: "Your Birthday Party",
     img: "images/movie.jpg",
-    desc: "We laughed and ate too much popcorn 🍿"
+    desc: "Celebrating your birthday with laughs, music, and friends 🎉"
   },
   3: {
-    title: "Amusement Park 🎡",
+    title: "Pickleball + Whiskeys Again",
     img: "images/park.jpg",
-    desc: "That roller coaster was unforgettable!"
+    desc: "Played pickleball then headed back to Whiskeys for round two!"
   },
   4: {
-    title: "Beach Walk 🌊",
+    title: "Squid Game Watch Party",
     img: "images/beach.jpg",
-    desc: "Peaceful evening by the ocean."
+    desc: "Snacks, games, and way too much laughter at the watch party."
   },
   5: {
-    title: "Concert 🎶",
+    title: "Two Man in the Backyard",
     img: "images/concert.jpg",
-    desc: "Danced the night away to our favorite songs 🎤"
+    desc: "Hanging out with Alan & Paris in the backyard jamming."
+  },
+  6: {
+    title: "Whiskeys Again lol",
+    img: "images/dinner.jpg",
+    desc: "Because one Whiskey Dicks night wasn’t enough."
+  },
+  7: {
+    title: "Fourth of July Fireworks",
+    img: "images/fireworks.jpg",
+    desc: "Lit up the night sky together on the 4th ❤️"
+  },
+  8: {
+    title: "Sleepover at Yours???",
+    img: "images/hike.jpg",
+    desc: "The night we stayed up way too late just talking."
+  },
+  9: {
+    title: "First Date & Kiss",
+    img: "images/arcade.jpg",
+    desc: "Our first real date — and the kiss I’ll never forget."
+  },
+  10: {
+    title: "Spikeball + Lottery Tickets",
+    img: "images/picnic.jpg",
+    desc: "Fun games and silly scratch-offs that made us laugh."
+  },
+  11: {
+    title: "Second Date",
+    img: "images/game.jpg",
+    desc: "A night that made things feel even more real."
+  },
+  12: {
+    title: "Third Date",
+    img: "images/roadtrip.jpg",
+    desc: "Driving, music, and endless conversations."
+  },
+  13: {
+    title: "Vegas Day 1",
+    img: "images/museum.jpg",
+    desc: "First day in Vegas, so much excitement and energy."
+  },
+  14: {
+    title: "Day Club / Diplo",
+    img: "images/mini-golf.jpg",
+    desc: "Pool parties, dancing, and living it up in Vegas."
+  },
+  15: {
+    title: "Marshmello",
+    img: "images/pool.jpg",
+    desc: "That night Marshmello’s set had us both hyped."
+  },
+  16: {
+    title: "Zedd + Saying Goodbye",
+    img: "images/restaurant.jpg",
+    desc: "Bittersweet — ending with Zedd and a tough goodbye."
   }
 };
 
